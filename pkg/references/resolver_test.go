@@ -2,9 +2,12 @@ package references
 
 import (
 	"context"
+	"testing"
+
 	appmesh "github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/equality"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -13,7 +16,6 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	testclient "sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"testing"
 )
 
 func Test_defaultResolver_ResolveMeshReference(t *testing.T) {
@@ -90,7 +92,7 @@ func Test_defaultResolver_ResolveMeshReference(t *testing.T) {
 			clientgoscheme.AddToScheme(k8sSchema)
 			appmesh.AddToScheme(k8sSchema)
 			k8sClient := testclient.NewFakeClientWithScheme(k8sSchema)
-			r := NewDefaultResolver(k8sClient, &log.NullLogger{})
+			r := NewDefaultResolver(k8sClient, logr.New(log.NullLogSink{}))
 
 			for _, ms := range tt.env.meshes {
 				err := k8sClient.Create(ctx, ms.DeepCopy())
@@ -234,7 +236,7 @@ func Test_defaultResolver_ResolveVirtualGatewayReference(t *testing.T) {
 			clientgoscheme.AddToScheme(k8sSchema)
 			appmesh.AddToScheme(k8sSchema)
 			k8sClient := testclient.NewFakeClientWithScheme(k8sSchema)
-			r := NewDefaultResolver(k8sClient, &log.NullLogger{})
+			r := NewDefaultResolver(k8sClient, logr.New(log.NullLogSink{}))
 
 			for _, ms := range tt.env.virtualGateways {
 				err := k8sClient.Create(ctx, ms.DeepCopy())
@@ -347,7 +349,7 @@ func Test_defaultResolver_ResolveVirtualNodeReference(t *testing.T) {
 			clientgoscheme.AddToScheme(k8sSchema)
 			appmesh.AddToScheme(k8sSchema)
 			k8sClient := testclient.NewFakeClientWithScheme(k8sSchema)
-			r := NewDefaultResolver(k8sClient, &log.NullLogger{})
+			r := NewDefaultResolver(k8sClient, logr.New(log.NullLogSink{}))
 
 			for _, vn := range tt.env.virtualNodes {
 				err := k8sClient.Create(ctx, vn.DeepCopy())
@@ -460,7 +462,7 @@ func Test_defaultResolver_ResolveVirtualServiceReference(t *testing.T) {
 			clientgoscheme.AddToScheme(k8sSchema)
 			appmesh.AddToScheme(k8sSchema)
 			k8sClient := testclient.NewFakeClientWithScheme(k8sSchema)
-			r := NewDefaultResolver(k8sClient, &log.NullLogger{})
+			r := NewDefaultResolver(k8sClient, logr.New(log.NullLogSink{}))
 
 			for _, vs := range tt.env.virtualServices {
 				err := k8sClient.Create(ctx, vs.DeepCopy())
@@ -573,7 +575,7 @@ func Test_defaultResolver_ResolveVirtualRouterReference(t *testing.T) {
 			clientgoscheme.AddToScheme(k8sSchema)
 			appmesh.AddToScheme(k8sSchema)
 			k8sClient := testclient.NewFakeClientWithScheme(k8sSchema)
-			r := NewDefaultResolver(k8sClient, &log.NullLogger{})
+			r := NewDefaultResolver(k8sClient, logr.New(log.NullLogSink{}))
 
 			for _, vr := range tt.env.virtualRouters {
 				err := k8sClient.Create(ctx, vr.DeepCopy())

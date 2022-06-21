@@ -3,9 +3,12 @@ package mesh
 import (
 	"context"
 	"errors"
+	"testing"
+
 	appmesh "github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/equality"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/k8s"
+	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +18,6 @@ import (
 	"k8s.io/client-go/tools/record"
 	testclient "sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"testing"
 )
 
 func Test_pendingMembersFinalizer_buildPendingMembersEventMessage(t *testing.T) {
@@ -173,7 +175,7 @@ func Test_pendingMembersFinalizer_buildPendingMembersEventMessage(t *testing.T) 
 			m := &pendingMembersFinalizer{
 				k8sClient:     k8sClient,
 				eventRecorder: eventRecorder,
-				log:           &log.NullLogger{},
+				log:           logr.New(log.NullLogSink{}),
 			}
 			got := m.buildPendingMembersEventMessage(ctx, tt.args.vsMembers, tt.args.vrMembers, tt.args.vnMembers,
 				tt.args.vgMembers, tt.args.grMembers)
@@ -285,7 +287,7 @@ func Test_pendingMembersFinalizer_findGatewayRouteMembers(t *testing.T) {
 			m := &pendingMembersFinalizer{
 				k8sClient:        k8sClient,
 				eventRecorder:    eventRecorder,
-				log:              &log.NullLogger{},
+				log:              logr.New(log.NullLogSink{}),
 				evaluateInterval: pendingMembersFinalizerEvaluateInterval,
 			}
 
@@ -412,7 +414,7 @@ func Test_pendingMembersFinalizer_findVirtualServiceMembers(t *testing.T) {
 			m := &pendingMembersFinalizer{
 				k8sClient:        k8sClient,
 				eventRecorder:    eventRecorder,
-				log:              &log.NullLogger{},
+				log:              logr.New(log.NullLogSink{}),
 				evaluateInterval: pendingMembersFinalizerEvaluateInterval,
 			}
 
@@ -539,7 +541,7 @@ func Test_pendingMembersFinalizer_findVirtualNodeMembers(t *testing.T) {
 			m := &pendingMembersFinalizer{
 				k8sClient:        k8sClient,
 				eventRecorder:    eventRecorder,
-				log:              &log.NullLogger{},
+				log:              logr.New(log.NullLogSink{}),
 				evaluateInterval: pendingMembersFinalizerEvaluateInterval,
 			}
 
@@ -666,7 +668,7 @@ func Test_pendingMembersFinalizer_findVirtualGatewayMembers(t *testing.T) {
 			m := &pendingMembersFinalizer{
 				k8sClient:        k8sClient,
 				eventRecorder:    eventRecorder,
-				log:              &log.NullLogger{},
+				log:              logr.New(log.NullLogSink{}),
 				evaluateInterval: pendingMembersFinalizerEvaluateInterval,
 			}
 
@@ -793,7 +795,7 @@ func Test_pendingMembersFinalizer_findVirtualRouterMembers(t *testing.T) {
 			m := &pendingMembersFinalizer{
 				k8sClient:        k8sClient,
 				eventRecorder:    eventRecorder,
-				log:              &log.NullLogger{},
+				log:              logr.New(log.NullLogSink{}),
 				evaluateInterval: pendingMembersFinalizerEvaluateInterval,
 			}
 
@@ -940,7 +942,7 @@ func Test_pendingMembersFinalizer_Finalize(t *testing.T) {
 			m := &pendingMembersFinalizer{
 				k8sClient:        k8sClient,
 				eventRecorder:    eventRecorder,
-				log:              &log.NullLogger{},
+				log:              logr.New(log.NullLogSink{}),
 				evaluateInterval: pendingMembersFinalizerEvaluateInterval,
 			}
 			for _, vs := range tt.env.virtualServices {

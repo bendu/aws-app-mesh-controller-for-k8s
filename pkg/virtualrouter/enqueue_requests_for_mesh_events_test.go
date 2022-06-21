@@ -2,8 +2,11 @@ package virtualrouter
 
 import (
 	"context"
+	"testing"
+
 	appmesh "github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/k8s"
+	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/assert"
@@ -16,7 +19,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"testing"
 )
 
 func Test_enqueueRequestsForMeshEvents_Update(t *testing.T) {
@@ -137,7 +139,7 @@ func Test_enqueueRequestsForMeshEvents_Update(t *testing.T) {
 			queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
 			h := &enqueueRequestsForMeshEvents{
 				k8sClient: k8sClient,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 
 			for _, vr := range tt.env.virtualRouters {
@@ -303,7 +305,7 @@ func Test_enqueueRequestsForMeshEvents_enqueueVirtualNodesForMesh(t *testing.T) 
 			queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
 			h := &enqueueRequestsForMeshEvents{
 				k8sClient: k8sClient,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 
 			for _, vr := range tt.env.virtualRouters {

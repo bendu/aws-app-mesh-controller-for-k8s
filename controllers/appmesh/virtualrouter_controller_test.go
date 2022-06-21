@@ -2,9 +2,12 @@ package controllers
 
 import (
 	"context"
+	"testing"
+
 	appmesh "github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
 	mock_virtualrouter "github.com/aws/aws-app-mesh-controller-for-k8s/mocks/aws-app-mesh-controller-for-k8s/pkg/virtualrouter"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/k8s"
+	"github.com/go-logr/logr"
 	"github.com/golang/mock/gomock"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +18,6 @@ import (
 	testclient "sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"testing"
 )
 
 func Test_virtualRouterReconciler_reconcile(t *testing.T) {
@@ -65,7 +67,7 @@ func Test_virtualRouterReconciler_reconcile(t *testing.T) {
 			err := k8sClient.Create(ctx, tt.args.vr.DeepCopy())
 			assert.NoError(t, err)
 
-			finalizerManager := k8s.NewDefaultFinalizerManager(k8sClient, &log.NullLogger{})
+			finalizerManager := k8s.NewDefaultFinalizerManager(k8sClient, logr.New(log.NullLogSink{}))
 
 			recorder := record.NewFakeRecorder(3)
 
@@ -73,7 +75,7 @@ func Test_virtualRouterReconciler_reconcile(t *testing.T) {
 				k8sClient:        k8sClient,
 				finalizerManager: finalizerManager,
 				vrResManager:     vrResManager,
-				log:              log.NullLogger{},
+				log:              logr.New(log.NullLogSink{}),
 				recorder:         recorder,
 			}
 

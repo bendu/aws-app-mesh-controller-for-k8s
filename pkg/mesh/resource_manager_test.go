@@ -2,11 +2,14 @@ package mesh
 
 import (
 	"context"
+	"testing"
+
 	appmesh "github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/equality"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/k8s"
 	"github.com/aws/aws-sdk-go/aws"
 	appmeshsdk "github.com/aws/aws-sdk-go/service/appmesh"
+	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/assert"
@@ -16,7 +19,6 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	testclient "sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"testing"
 )
 
 func Test_defaultResourceManager_updateCRDMesh(t *testing.T) {
@@ -115,7 +117,7 @@ func Test_defaultResourceManager_updateCRDMesh(t *testing.T) {
 
 			m := &defaultResourceManager{
 				k8sClient: k8sClient,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 
 			err := k8sClient.Create(ctx, tt.args.ms.DeepCopy())
@@ -184,7 +186,7 @@ func Test_defaultResourceManager_isSDKMeshControlledByCRDMesh(t *testing.T) {
 			ctx := context.Background()
 			m := &defaultResourceManager{
 				accountID: tt.fields.accountID,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 			got := m.isSDKMeshControlledByCRDMesh(ctx, tt.args.sdkMS, tt.args.ms)
 			assert.Equal(t, tt.want, got)
@@ -238,7 +240,7 @@ func Test_defaultResourceManager_isSDKMeshOwnedByCRDMesh(t *testing.T) {
 			ctx := context.Background()
 			m := &defaultResourceManager{
 				accountID: tt.fields.accountID,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 			got := m.isSDKMeshOwnedByCRDMesh(ctx, tt.args.sdkMS, tt.args.ms)
 			assert.Equal(t, tt.want, got)

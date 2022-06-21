@@ -2,8 +2,11 @@ package cloudmap
 
 import (
 	"context"
+	"testing"
+
 	appmesh "github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/k8s"
+	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/assert"
@@ -16,7 +19,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"testing"
 )
 
 func Test_enqueueRequestsForPodEvents_Create(t *testing.T) {
@@ -97,7 +99,7 @@ func Test_enqueueRequestsForPodEvents_Create(t *testing.T) {
 			queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
 			h := &enqueueRequestsForPodEvents{
 				k8sClient: k8sClient,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 
 			for _, vn := range tt.env.virtualNodes {
@@ -245,7 +247,7 @@ func Test_enqueueRequestsForPodEvents_Update(t *testing.T) {
 			queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
 			h := &enqueueRequestsForPodEvents{
 				k8sClient: k8sClient,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 
 			for _, vn := range tt.env.virtualNodes {
@@ -348,7 +350,7 @@ func Test_enqueueRequestsForPodEvents_Delete(t *testing.T) {
 			queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
 			h := &enqueueRequestsForPodEvents{
 				k8sClient: k8sClient,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 
 			for _, vn := range tt.env.virtualNodes {

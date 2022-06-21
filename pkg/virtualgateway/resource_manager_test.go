@@ -2,12 +2,15 @@ package virtualgateway
 
 import (
 	"context"
+	"testing"
+
 	appmesh "github.com/aws/aws-app-mesh-controller-for-k8s/apis/appmesh/v1beta2"
 	mock_resolver "github.com/aws/aws-app-mesh-controller-for-k8s/mocks/aws-app-mesh-controller-for-k8s/pkg/references"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/equality"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/k8s"
 	"github.com/aws/aws-sdk-go/aws"
 	appmeshsdk "github.com/aws/aws-sdk-go/service/appmesh"
+	"github.com/go-logr/logr"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -19,7 +22,6 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	testclient "sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	"testing"
 )
 
 func Test_defaultResourceManager_updateCRDVirtualGateway(t *testing.T) {
@@ -117,7 +119,7 @@ func Test_defaultResourceManager_updateCRDVirtualGateway(t *testing.T) {
 			k8sClient := testclient.NewFakeClientWithScheme(k8sSchema)
 			m := &defaultResourceManager{
 				k8sClient: k8sClient,
-				log:       log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 
 			err := k8sClient.Create(ctx, tt.args.vg.DeepCopy())
@@ -186,7 +188,7 @@ func Test_defaultResourceManager_isSDKVirtualGatewayControlledByCRDVirtualGatewa
 			ctx := context.Background()
 			m := &defaultResourceManager{
 				accountID: tt.fields.accountID,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 			got := m.isSDKVirtualGatewayControlledByCRDVirtualGateway(ctx, tt.args.sdkVG, tt.args.vg)
 			assert.Equal(t, tt.want, got)
@@ -240,7 +242,7 @@ func Test_defaultResourceManager_isSDKVirtualGatewayOwnedByCRDVirtualGateway(t *
 			ctx := context.Background()
 			m := &defaultResourceManager{
 				accountID: tt.fields.accountID,
-				log:       &log.NullLogger{},
+				log:       logr.New(log.NullLogSink{}),
 			}
 			got := m.isSDKVirtualGatewayOwnedByCRDVirtualGateway(ctx, tt.args.sdkVG, tt.args.vg)
 			assert.Equal(t, tt.want, got)
@@ -362,7 +364,7 @@ func Test_defaultResourceManager_findMeshDependency(t *testing.T) {
 
 			m := &defaultResourceManager{
 				referencesResolver: resolver,
-				log:                log.NullLogger{},
+				log:                logr.New(log.NullLogSink{}),
 			}
 
 			if tt.fields.ResolveMeshReference != nil {
@@ -436,7 +438,7 @@ func Test_defaultResourceManager_validateMeshDependency(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.Background()
 			m := &defaultResourceManager{
-				log: log.NullLogger{},
+				log: logr.New(log.NullLogSink{}),
 			}
 
 			err := m.validateMeshDependencies(ctx, tt.args.mesh)
