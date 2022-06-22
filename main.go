@@ -18,10 +18,11 @@ package main
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go/service/eks"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/aws/aws-sdk-go/service/eks"
 
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/aws/throttle"
 	"github.com/aws/aws-app-mesh-controller-for-k8s/pkg/cloudmap"
@@ -152,7 +153,7 @@ func main() {
 		Port:                       9443,
 		LeaderElection:             enableLeaderElection,
 		LeaderElectionID:           "appmesh-controller-leader-election",
-		LeaderElectionResourceLock: resourcelock.ConfigMapsResourceLock,
+		LeaderElectionResourceLock: resourcelock.ConfigMapsLeasesResourceLock,
 		HealthProbeBindAddress:     healthProbeBindAddress,
 	})
 

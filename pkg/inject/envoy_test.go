@@ -805,7 +805,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -943,7 +943,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -1077,14 +1077,14 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
 								},
 							},
 							ReadinessProbe: &corev1.Probe{
-								ProbeHandler: corev1.HaProbeHandlerndler{
+								ProbeHandler: corev1.ProbeHandler{
 
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE",
@@ -1222,7 +1222,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -1392,7 +1392,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -1544,7 +1544,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -1674,7 +1674,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -1819,7 +1819,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -1971,7 +1971,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -2157,7 +2157,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -2302,7 +2302,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -2451,7 +2451,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
@@ -2611,7 +2611,7 @@ func Test_envoyMutator_mutate(t *testing.T) {
 							},
 							Lifecycle: &corev1.Lifecycle{
 								PostStart: nil,
-								PreStop: &corev1.Handler{
+								PreStop: &corev1.LifecycleHandler{
 									Exec: &corev1.ExecAction{Command: []string{
 										"sh", "-c", "sleep 20",
 									}},
