@@ -182,7 +182,7 @@ func buildEnvoySidecar(vars EnvoyTemplateVariables, env map[string]string) (core
 		},
 		Lifecycle: &corev1.Lifecycle{
 			PostStart: nil,
-			PreStop: &corev1.Handler{
+			PreStop: &corev1.LifecycleHandler{
 				Exec: &corev1.ExecAction{Command: []string{
 					"sh", "-c", fmt.Sprintf("sleep %s", vars.PreStopDelay),
 				}},
@@ -223,7 +223,7 @@ func getEnvoyEnv(env map[string]string) []corev1.EnvVar {
 func envoyReadinessProbe(initialDelaySeconds int32, periodSeconds int32, adminAccessPort string) *corev1.Probe {
 	envoyReadinessCommand := "curl -s http://localhost:" + adminAccessPort + "/server_info | grep state | grep -q LIVE"
 	return &corev1.Probe{
-		Handler: corev1.Handler{
+		ProbeHandler: corev1.ProbeHandler{
 
 			// server_info returns the following struct:
 			// {
